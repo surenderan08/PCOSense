@@ -11,15 +11,20 @@ from werkzeug.security import generate_password_hash, check_password_hash
 app = Flask(__name__)
 CORS(app)
 
-DB_PATH = "pcosense.db"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_DIR = os.path.join(BASE_DIR, "model")
+
+# Temporary database for serverless deployment testing.
+# Data may be lost when the serverless instance is restarted.
+DB_PATH = "/tmp/pcosense.db"
 
 # Load trained files
 try:
-    model = joblib.load("model/pcos_model.pkl")
-    scaler = joblib.load("model/scaler.pkl")
-    feature_names = joblib.load("model/feature_names.pkl")
+    model = joblib.load(os.path.join(MODEL_DIR, "pcos_model.pkl"))
+    scaler = joblib.load(os.path.join(MODEL_DIR, "scaler.pkl"))
+    feature_names = joblib.load(os.path.join(MODEL_DIR, "feature_names.pkl"))
 except Exception as e:
-    print(f"Error loading model files: {e}")
+    raise RuntimeError(f"Error loading PCOS model files: {e}") from e
 
 # Median values calculated from training dataset to use as fallback defaults
 DEFAULT_MEDIANS = {
