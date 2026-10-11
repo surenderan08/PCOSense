@@ -7,7 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import PredictionForm from "./pages/PredictionForm";
 import Analytics from "./pages/Analytics";
 import AdminDashboard from "./pages/AdminDashboard";
-import "./App.css";
+import "./app.css";
 
 function App() {
   return (
